@@ -1,0 +1,204 @@
+================================================================================
+    INFOBEANS RESUME BUILDER - INSTALLATION & QUICK START
+================================================================================
+
+THIS IS YOUR QUICK REFERENCE CARD!
+Print this or keep it handy while setting up.
+
+================================================================================
+STEP 1: CHECK IF YOU HAVE NODE.JS
+================================================================================
+
+On Windows:
+- Open Command Prompt (press Win + R, type cmd, press Enter)
+- Type: node --version
+- If you see a version number, you have Node.js ✓
+- If not, download from https://nodejs.org/ (choose LTS version)
+
+On Mac:
+- Open Terminal (press Cmd + Space, type terminal, press Enter)
+- Type: node --version
+- If you see a version number, you have Node.js ✓
+- If not, download from https://nodejs.org/
+
+On Linux:
+- Open Terminal
+- Type: node --version
+- If no version, install: sudo apt install nodejs npm
+
+================================================================================
+STEP 2: NAVIGATE TO PROJECT FOLDER
+================================================================================
+
+On Windows (Command Prompt):
+cd "c:\Users\IBAdmin\Downloads\infobeans resume"
+
+On Mac/Linux (Terminal):
+cd ~/Downloads/"infobeans resume"
+
+(Copy-paste the command above if easier)
+
+================================================================================
+STEP 3: INSTALL DEPENDENCIES (ONE TIME ONLY)
+================================================================================
+
+Type this command and press Enter:
+
+npm install
+
+Wait 2-5 minutes. You'll see lots of text. This is normal.
+It's downloading the required packages.
+
+When it's done, you should see:
+"added XX packages in X.XXs"
+
+================================================================================
+STEP 4: START THE APPLICATION
+================================================================================
+
+Type this command and press Enter:
+
+npm start
+
+The application will start and your browser will open automatically.
+You'll see the InfoBeans Resume Builder interface!
+
+If browser doesn't open:
+- Go to http://localhost:3000
+- Or check your terminal for the URL
+
+================================================================================
+STEP 5: START CREATING YOUR RESUME!
+================================================================================
+
+Option A: Fill out the form
+- Click "Form Input" tab
+- Fill in your resume details
+- Click "Generate Resume Preview"
+- Click "📥 Download PDF"
+
+Option B: Upload existing resume
+- Click "Upload Resume" tab
+- Drag and drop your resume file
+- Review extracted information
+- Click "Generate Resume Preview"
+- Click "📥 Download PDF"
+
+================================================================================
+HELPFUL SHORTCUTS
+================================================================================
+
+Start next time:
+cd "c:\Users\IBAdmin\Downloads\infobeans resume"
+npm start
+
+Stop the application:
+Press Ctrl + C in terminal
+
+To stop npm:
+Press Ctrl + C
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Problem: "npm is not recognized"
+→ Node.js not installed. Download from nodejs.org
+
+Problem: Port 3000 already in use
+→ Another app using the port. Restart your computer.
+
+Problem: "Module not found" error
+→ Run: npm install --legacy-peer-deps
+
+Problem: Form won't load
+→ Refresh browser: Ctrl + R (Windows) or Cmd + R (Mac)
+
+Problem: PDF download doesn't work
+→ Try a different browser (Chrome recommended)
+
+================================================================================
+FILE LOCATIONS
+================================================================================
+
+Your resume files will be saved in:
+→ Downloads folder (when you download the PDF)
+
+Project files are in:
+→ c:\Users\IBAdmin\Downloads\infobeans resume
+
+Documentation files:
+→ START_HERE.md (read this for overview)
+→ QUICK_START.md (read this for detailed usage)
+→ SETUP.md (read this if you have problems)
+
+================================================================================
+NEED HELP?
+================================================================================
+
+1. Check START_HERE.md for quick overview
+2. Read QUICK_START.md for usage instructions
+3. Check SETUP.md for troubleshooting
+4. Look at browser console: Press F12
+
+================================================================================
+KEY FEATURES
+================================================================================
+
+✓ Fill form with resume details
+✓ Upload existing resume file
+✓ Auto-parse and extract information
+✓ Format with InfoBeans professional template
+✓ Download as high-quality PDF
+✓ Print to paper or PDF printer
+✓ All data stays on your computer (no cloud)
+
+================================================================================
+REMEMBER
+================================================================================
+
+This is a fully functional React application!
+- All code is already written
+- All styling is ready
+- Just install and run!
+
+One command to remember:
+npm start
+
+That's it! The app does the rest.
+
+================================================================================
+ESTIMATED TIME
+================================================================================
+
+First time setup:
+- Install Node.js: 5-10 minutes (if needed)
+- npm install: 2-5 minutes
+- npm start: 30 seconds
+- Total: 5-20 minutes (mostly just Node.js installation)
+
+Next times:
+- npm start: Takes 30 seconds, that's it!
+
+Creating a resume:
+- Form input: 10-20 minutes
+- File upload: 5-10 minutes
+- PDF download: 5-10 seconds
+
+================================================================================
+GO!
+================================================================================
+
+Ready to start?
+
+1. Open Command Prompt/Terminal
+2. Navigate to the folder (copy-paste the cd command)
+3. Run: npm install
+4. Run: npm start
+5. Start creating resumes!
+
+Questions? Check START_HERE.md in the project folder!
+
+Good luck! 🚀
+
+================================================================================
