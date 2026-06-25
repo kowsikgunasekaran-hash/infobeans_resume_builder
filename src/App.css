@@ -197,12 +197,34 @@ body {
 }
 
 @media (max-width: 768px) {
+  .app-header {
+    padding: 1.25rem 1rem;
+  }
+
   .app-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+  }
+
+  .app-header p {
+    font-size: 0.9rem;
+  }
+
+  .app-logo {
+    height: 30px;
   }
 
   .main-content {
     padding: 1rem;
+  }
+
+  .tabs {
+    gap: 0.25rem;
+  }
+
+  .tab-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    flex: 1;
   }
 
   .form-section-wrapper {
@@ -211,6 +233,24 @@ body {
 
   .form-preview-container {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .subtabs {
+    flex-wrap: wrap;
+  }
+
+  .subtab {
+    flex: 1;
+    text-align: center;
+    padding: 0.55rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .tab-button {
+    padding: 0.7rem 0.5rem;
+    font-size: 0.85rem;
   }
 }
 

@@ -1,44 +1,98 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { Document, Packer, Paragraph, ImageRun, AlignmentType } from 'docx';
 import './ResumePreview.css';
 
 const ResumePreview = ({ data, isEmbedded = false }) => {
   const resumeRef = useRef();
+  const [busy, setBusy] = useState('');
 
-  const generatePDF = async () => {
-    const element = resumeRef.current;
-    const canvas = await html2canvas(element, {
+  const safeName = () =>
+    (data.fullName || 'InfoBeans_Profile').trim().replace(/\s+/g, '_');
+
+  const renderCanvas = () =>
+    html2canvas(resumeRef.current, {
       scale: 2,
       useCORS: true,
       logging: false,
       backgroundColor: '#ffffff',
     });
 
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4',
-    });
+  const downloadBlob = (blob, filename) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
-    const imgWidth = 210; // A4 width in mm
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 0;
+  const generateDOCX = async () => {
+    setBusy('docx');
+    try {
+      const canvas = await renderCanvas();
+      const base64 = canvas.toDataURL('image/png').split(',')[1];
+      const bin = atob(base64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
 
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    heightLeft -= 297; // A4 height in mm
+      // Fit the rendered profile to an A4 page width, preserving aspect.
+      const pageW = 620;
+      const w = pageW;
+      const h = (canvas.height * pageW) / canvas.width;
 
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= 297;
+      const doc = new Document({
+        sections: [
+          {
+            properties: {
+              page: { margin: { top: 360, bottom: 360, left: 360, right: 360 } },
+            },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new ImageRun({ data: bytes, transformation: { width: w, height: h } }),
+                ],
+              }),
+            ],
+          },
+        ],
+      });
+      const blob = await Packer.toBlob(doc);
+      downloadBlob(blob, `${safeName()}_Profile.docx`);
+    } finally {
+      setBusy('');
     }
+  };
 
-    const safeName = (data.fullName || 'InfoBeans_Profile').trim().replace(/\s+/g, '_');
-    pdf.save(`${safeName}_Profile.pdf`);
+  const generatePDF = async () => {
+    setBusy('pdf');
+    try {
+      const canvas = await renderCanvas();
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= 297; // A4 height in mm
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= 297;
+      }
+      pdf.save(`${safeName()}_Profile.pdf`);
+    } finally {
+      setBusy('');
+    }
   };
 
   const printResume = () => {
@@ -48,10 +102,13 @@ const ResumePreview = ({ data, isEmbedded = false }) => {
   return (
     <div className={`resume-preview-container ${isEmbedded ? 'embedded' : ''}`}>
       <div className="preview-actions">
-        <button className="btn-download" onClick={generatePDF}>
-          📥 Download PDF
+        <button className="btn-download" onClick={generatePDF} disabled={!!busy}>
+          {busy === 'pdf' ? '…' : '📥 Download PDF'}
         </button>
-        <button className="btn-print" onClick={printResume}>
+        <button className="btn-download" onClick={generateDOCX} disabled={!!busy}>
+          {busy === 'docx' ? '…' : '📝 Download DOCX'}
+        </button>
+        <button className="btn-print" onClick={printResume} disabled={!!busy}>
           🖨️ Print
         </button>
       </div>

@@ -1,6 +1,6 @@
 .cert-builder {
   display: grid;
-  grid-template-columns: minmax(320px, 1fr) auto;
+  grid-template-columns: minmax(300px, 1fr) auto;
   gap: 2rem;
   align-items: flex-start;
 }
@@ -288,10 +288,8 @@
   gap: 0.75rem;
 }
 
-/* reserves the scaled footprint (600*0.62 x 900*0.62) */
+/* reserves the scaled footprint; exact size is set inline from JS scale */
 .cert-stage-box {
-  width: 372px;
-  height: 558px;
   max-width: 100%;
 }
 
@@ -403,8 +401,39 @@
   }
   .cert-form {
     max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
   .cert-preview-wrap {
-    align-items: flex-start;
+    align-items: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .cert-builder {
+    gap: 1.25rem;
+  }
+  .cert-form .form-section {
+    padding: 1rem;
+  }
+  .cert-form .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .type-grid {
+    gap: 0.4rem;
+  }
+  .type-card {
+    padding: 0.7rem 0.25rem;
+    font-size: 0.74rem;
+  }
+  .download-row {
+    flex-direction: column;
+  }
+  .dl-btn {
+    width: 100%;
+  }
+  .cert-hint {
+    max-width: 100%;
   }
 }

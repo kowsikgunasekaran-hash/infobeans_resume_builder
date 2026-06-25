@@ -153,7 +153,7 @@ const maskStarPhoto = (src, frame, zoom, pos) =>
 
 const PILLARS = ['COMPASSION', 'INNOVATION', 'TRANSPARENCY', 'EXCELLENCE', 'OWNERSHIP'];
 
-const DISPLAY_SCALE = 0.62; // preview shrink; export captures full 600x900
+const DESKTOP_SCALE = 0.62; // preview shrink on desktop; export always captures full 600x900
 
 const CertificateBuilder = () => {
   const [type, setType] = useState('pat');
@@ -176,6 +176,18 @@ const CertificateBuilder = () => {
   const [photoZoom, setPhotoZoom] = useState(1);
   const [photoPos, setPhotoPos] = useState({ x: 0, y: 0 });
   const [busy, setBusy] = useState('');
+  const [scale, setScale] = useState(DESKTOP_SCALE); // responsive preview scale
+
+  // Fit the 600x900 stage to the viewport width (phones included).
+  useEffect(() => {
+    const compute = () => {
+      const target = Math.min(372, window.innerWidth - 48);
+      setScale(Math.max(0.3, target / 600));
+    };
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, []);
 
   const certRef = useRef();
   const dragRef = useRef(null);
@@ -222,8 +234,8 @@ const CertificateBuilder = () => {
     if (!dragRef.current) return;
     const p = e.touches ? e.touches[0] : e;
     setPhotoPos({
-      x: dragRef.current.x + (p.clientX - dragRef.current.sx) / DISPLAY_SCALE,
-      y: dragRef.current.y + (p.clientY - dragRef.current.sy) / DISPLAY_SCALE,
+      x: dragRef.current.x + (p.clientX - dragRef.current.sx) / scale,
+      y: dragRef.current.y + (p.clientY - dragRef.current.sy) / scale,
     });
   };
   const onPhotoUp = () => {
@@ -259,8 +271,8 @@ const CertificateBuilder = () => {
     if (memberDrag.current == null) return;
     const p = e.touches ? e.touches[0] : e;
     const { i, sx, sy, ox, oy } = memberDrag.current;
-    const nx = ox + (p.clientX - sx) / DISPLAY_SCALE;
-    const ny = oy + (p.clientY - sy) / DISPLAY_SCALE;
+    const nx = ox + (p.clientX - sx) / scale;
+    const ny = oy + (p.clientY - sy) / scale;
     setMembers((prev) => prev.map((m, idx) => (idx === i ? { ...m, dx: nx, dy: ny } : m)));
   };
   const onMemberUp = () => {
@@ -599,8 +611,8 @@ const CertificateBuilder = () => {
 
       {/* ---------------- Live preview (exact PPT layout) ---------------- */}
       <div className="cert-preview-wrap">
-        <div className="cert-stage-box">
-          <div className="cert-stage" style={{ transform: `scale(${DISPLAY_SCALE})` }}>
+        <div className="cert-stage-box" style={{ width: 600 * scale, height: 900 * scale }}>
+          <div className="cert-stage" style={{ transform: `scale(${scale})` }}>
             <div
               className={`certificate cert-${type}`}
               ref={certRef}
